@@ -4,6 +4,7 @@ some image scanner service for mall
 
 ## China ID scan
 Please keep the network access ready for `https://shujuapi.aliyun.com/dataplus_57525/ocr/ocr_idcard`
+You can also test ID image scan manually online by [aliyun data](https://data.aliyun.com/demo/ai/ocr?spm=a2c0j.7918055.banner.2.726Az2)
 
 ```
 ~/Downloads > curl -i -F "backImage=@/Users/bingoohuang/Downloads/back.jpg" "http://localhost:8367/chinaid/scan/back"
