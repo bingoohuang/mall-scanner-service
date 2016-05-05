@@ -9,6 +9,8 @@ import com.github.bingoohuang.mallscanner.utils.DataPlusParams;
 import com.github.bingoohuang.mallscanner.utils.DataPlusSender;
 import com.github.bingoohuang.springrest.boot.annotations.RestfulSign;
 import com.google.common.io.ByteStreams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,8 @@ import java.io.InputStream;
 @RequestMapping("/chinaid/scan")
 @RestfulSign(ignore = true)
 public class ChinaIdController {
+    Logger logger = LoggerFactory.getLogger(ChinaIdController.class);
+
     static String service_url = "https://shujuapi.aliyun.com/dataplus_57525/ocr/ocr_idcard";
 
     static String ak_id = ClassPathProperties.getConfig("dataplus.properties", "AccessKeyID");
@@ -83,11 +87,16 @@ public class ChinaIdController {
     }
 
     private JSONObject parseResponse(String result) {
-        JSONObject resultObj = JSON.parseObject(result);
-        JSONArray outputs = resultObj.getJSONArray("outputs");
-        JSONObject jsonObject = outputs.getJSONObject(0);
-        String output = jsonObject.getJSONObject("outputValue").getString("dataValue");
-        return JSON.parseObject(output);
+        try {
+            JSONObject resultObj = JSON.parseObject(result);
+            JSONArray outputs = resultObj.getJSONArray("outputs");
+            JSONObject jsonObject = outputs.getJSONObject(0);
+            String output = jsonObject.getJSONObject("outputValue").getString("dataValue");
+            return JSON.parseObject(output);
+        } catch (Exception ex){
+            logger.warn("unable to parse JSON result {}", result, ex);
+            throw ex;
+        }
     }
 
     private String createRequestBody(MultipartFile faceImage, String side) throws IOException {
