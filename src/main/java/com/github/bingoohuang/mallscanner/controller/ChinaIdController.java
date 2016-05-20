@@ -48,8 +48,9 @@ public class ChinaIdController {
     public ChinaId faceScan(@RequestParam("faceImage") MultipartFile faceImage) throws IOException {
         String body = createRequestBody(faceImage, "face");
         String result = DataPlusSender.sendPost(service_url, body, ak_id, ak_secret);
+        // maybe: PK(1675561588093511) Visit Group(190) Out Quota
         JSONObject out = parseResponse(result);
-        if (out.getBoolean("success")) {
+        if (out != null && out.getBoolean("success")) {
             String name = out.getString("name");
             String num = out.getString("num");
             String address = out.getString("address");
@@ -77,7 +78,7 @@ public class ChinaIdController {
         String body = createRequestBody(backImage, "back");
         String result = DataPlusSender.sendPost(service_url, body, ak_id, ak_secret);
         JSONObject out = parseResponse(result);
-        if (out.getBoolean("success")) {
+        if (out != null && out.getBoolean("success")) {
             String startDate = out.getString("start_date");
             String endDate = out.getString("end_date");
             return ChinaId.newChinaIdBack(startDate, endDate);
@@ -94,8 +95,8 @@ public class ChinaIdController {
             String output = jsonObject.getJSONObject("outputValue").getString("dataValue");
             return JSON.parseObject(output);
         } catch (Exception ex){
-            logger.warn("unable to parse JSON result {}", result, ex);
-            throw ex;
+            logger.warn("unable to parse JSON result {}", result);
+            return null;
         }
     }
 
