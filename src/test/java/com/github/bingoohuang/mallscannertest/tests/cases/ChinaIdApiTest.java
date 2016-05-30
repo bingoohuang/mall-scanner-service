@@ -38,7 +38,7 @@ public class ChinaIdApiTest {
         assertThat(chinaId.getName()).isEqualTo("沈涛");
         assertThat(chinaId.getNum()).isEqualTo("510121198805116072");
         ChinaIdValidator.validate(chinaId.getNum());
-        assertThat(chinaId.getAddress()).isEqualTo("四川省金堂县竹篙镇竹寺15组");
+        assertThat(chinaId.getAddress()).isEqualTo("四川省金堂县竹篙镇竹篙寺15组");
     }
 
     public ChinaId faceScan(String classPathImage) throws IOException {
