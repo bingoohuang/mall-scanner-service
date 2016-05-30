@@ -1,6 +1,12 @@
 # mall-scanner-service
 some image scanner service for mall
 
+## Install and Startup
+### Install
+mvn package -DPbeKey={your pbe key}
+
+### Startup
+java -DPbeKey={your pbe key}  -jar mall-scanner-service-0.0.1.jar
 
 ## China ID scan
 Please keep the network access ready for `https://shujuapi.aliyun.com/dataplus_57525/ocr/ocr_idcard`

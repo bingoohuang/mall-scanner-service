@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.bingoohuang.mallscanner.domain.ChinaId;
-import com.github.bingoohuang.mallscanner.utils.ClassPathProperties;
+import com.github.bingoohuang.mallscanner.utils.ClassPathProps;
 import com.github.bingoohuang.mallscanner.utils.DataPlusParams;
 import com.github.bingoohuang.mallscanner.utils.DataPlusSender;
 import com.github.bingoohuang.springrest.boot.annotations.RestfulSign;
@@ -29,8 +29,8 @@ public class ChinaIdController {
 
     static String service_url = "https://shujuapi.aliyun.com/dataplus_57525/ocr/ocr_idcard";
 
-    static String ak_id = ClassPathProperties.getConfig("dataplus.properties", "AccessKeyID");
-    static String ak_secret = ClassPathProperties.getConfig("dataplus.properties", "AccessKeySecret");
+    static String ak_id = ClassPathProps.getConfig("dataplus.properties", "AccessKeyID");
+    static String ak_secret = ClassPathProps.getConfig("dataplus.properties", "AccessKeySecret");
 
     /*
     ~/Downloads > curl -i -F "faceImage=@/Users/bingoohuang/Downloads/face.jpg" "http://localhost:8367/chinaid/scan/face"
