@@ -24,40 +24,41 @@ public class BarcodeApiTest {
 
     @Test
     public void barcode() throws IOException {
-        ClassPathResource iccidRes = new ClassPathResource("barcode/iccid.jpg");
-        InputStream iccidIs = iccidRes.getInputStream();
-        byte[] iccidBytes = ByteStreams.toByteArray(iccidIs);
-
-        MockMultipartFile barcodeImage = new MockMultipartFile("barcodeImage",
-                "barcodeImage", null, iccidBytes);
-        Barcode barcode = barcodeApi.barcodeScan(barcodeImage);
+        Barcode barcode = scan("barcode/iccid.jpg");
         assertThat(barcode.getState()).isEqualTo(0);
         assertThat(barcode.getCodeText()).isEqualTo("8986011471110101394");
     }
 
     @Test
-    public void qrcode() throws IOException {
-        ClassPathResource wechatRes = new ClassPathResource("barcode/wechat.jpg");
-        InputStream iccidIs = wechatRes.getInputStream();
-        byte[] iccidBytes = ByteStreams.toByteArray(iccidIs);
+    public void barcodeWithId() throws IOException {
+        Barcode barcode = scan("barcode/id.iccid1.png");
+        assertThat(barcode.getState()).isEqualTo(0);
+        assertThat(barcode.getCodeText()).isEqualTo("8986011571110099398");
+    }
 
-        MockMultipartFile wechatImage = new MockMultipartFile("barcodeImage",
-                "barcodeImage", null, iccidBytes);
-        Barcode barcode = barcodeApi.barcodeScan(wechatImage);
+    @Test
+    public void qrcode() throws IOException {
+        Barcode barcode = scan("barcode/wechat.jpg");
         assertThat(barcode.getState()).isEqualTo(0);
         assertThat(barcode.getCodeText()).isEqualTo("http://weixin.qq.com/r/ufsIEOTE_7mEraBz966r");
     }
 
     @Test
     public void none() throws IOException {
-        ClassPathResource res = new ClassPathResource("barcode/none.png");
+        Barcode barcode = scan("barcode/none.png");
+        assertThat(barcode.getState()).isEqualTo(-2);
+        assertThat(barcode.getMessage()).isEqualTo("No barcode recognized");
+    }
+
+    public Barcode scan(String path) throws IOException {
+        ClassPathResource res = new ClassPathResource(path);
         InputStream is = res.getInputStream();
         byte[] bytes  = ByteStreams.toByteArray(is);
 
         MockMultipartFile wechatImage = new MockMultipartFile("barcodeImage",
                 "barcodeImage", null, bytes);
-        Barcode barcode = barcodeApi.barcodeScan(wechatImage);
-        assertThat(barcode.getState()).isEqualTo(-2);
-        assertThat(barcode.getMessage()).isEqualTo("No barcode recognized");
+        return barcodeApi.barcodeScan(wechatImage);
     }
+
+
 }
